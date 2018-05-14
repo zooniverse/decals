@@ -317,6 +317,7 @@ def coords_to_ned(ra, dec, search_radius):
 def coords_to_vizier(ra, dec, search_radius):
     """
     Get vizier search url for objects within search_radius of ra, dec coordinates.
+    Include radius from search target, sort by radius from search target.
     http://vizier.u-strasbg.fr/doc/asu-summary.htx
     Args:
         ra (float): right ascension in degrees
@@ -326,7 +327,8 @@ def coords_to_vizier(ra, dec, search_radius):
     Returns:
         (str): sdss navigate url for objects at ra, dec
     """
-    return 'http://vizier.u-strasbg.fr/viz-bin/VizieR?&-c={},{}&-c.rs={}'.format(ra, dec, search_radius)
+    return 'http://vizier.u-strasbg.fr/viz-bin/VizieR?&-c={},{}&-c.rs={}&-out.add=_r&-sort=_r'.format(
+        ra, dec, search_radius)
 
 
 def wrap_url_in_new_tab_markdown(url, display_text):
