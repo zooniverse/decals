@@ -1,5 +1,7 @@
 import pytest
 
+import logging
+
 import numpy as np
 from astropy import units as u
 from astropy.table import Table
@@ -96,7 +98,12 @@ def test_get_key_astrophysical_columns(catalog):
     assert 'another column' not in actual_columns
 
 
-def test_get_key_astrophysical_columns_warns_if_col_missing(catalog):
+def test_get_key_astrophysical_columns_warns_if_col_missing(caplog, catalog):
     del catalog['nsa_version']
-    with pytest.warns(UserWarning):
-        get_key_astrophysical_columns(catalog)
+    caplog.set_level(logging.CRITICAL)
+    get_key_astrophysical_columns(catalog)
+    # see https://docs.pytest.org/en/latest/logging.html for caplog fixture
+    for record in caplog.records:
+        assert record.levelname == 'CRITICAL'
+        # see https://docs.python.org/3/library/logging.html#logging.LogRecord for record object
+        assert 'Key metadata column "nsa_version" missing; manifest incomplete' in record.msg
