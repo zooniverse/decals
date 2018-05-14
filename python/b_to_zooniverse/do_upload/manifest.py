@@ -12,7 +12,7 @@ from tqdm import tqdm
 
 from b_to_zooniverse.do_upload.make_decals_metadata import get_key_astrophysical_columns
 from b_to_zooniverse.to_zooniverse_settings import zooniverse_login_loc
-import shared_utilities
+from shared_astro_utilities import time_utils
 
 
 def create_manifest_from_calibration_catalog(catalog, image_columns):
@@ -117,7 +117,7 @@ def create_manifest_from_joint_catalog(catalog):
     key_data = key_data.rename(columns=dict(zip(current_columns, prepended_columns)))
 
     key_data['metadata_message'] = 'Metadata is available in [Talk](+tab+https://www.zooniverse.org/projects/zookeeper/galaxy-zoo/talk)'
-    key_data['#upload_date'] = shared_utilities.current_date()  # not shown to users
+    key_data['#upload_date'] = time_utils.current_date()  # not shown to users
 
     # create the manifest structure that Panoptes Python client expects
     key_data_as_dicts = key_data.apply(lambda x: x.to_dict(), axis=1).values

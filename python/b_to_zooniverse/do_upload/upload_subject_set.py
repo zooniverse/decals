@@ -1,11 +1,11 @@
 import astropy.table
 
 from b_to_zooniverse.do_upload import manifest
-from shared_utilities import current_date
+from shared_astro_utilities import time_utils
 
 
 def upload_galaxy_subject_set(catalog, subject_set_name):
-    name = '{}_{}'.format(current_date(), subject_set_name)
+    name = '{}_{}'.format(time_utils.current_date(), subject_set_name)
     galaxy_manifest = manifest.create_manifest_from_joint_catalog(catalog)
     return manifest.upload_manifest_to_galaxy_zoo(name, galaxy_manifest)
 

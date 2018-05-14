@@ -15,7 +15,7 @@ from b_to_zooniverse.previous_subjects.previous_decals_subjects import get_previ
 from b_to_zooniverse.make_calibration_images.get_calibration_catalog import get_expert_catalog, get_expert_catalog_joined_with_decals
 from b_to_zooniverse.make_calibration_images.get_calibration_images import make_catalog_png_images
 from b_to_zooniverse.setup.check_joint_catalog import enforce_joint_catalog_columns
-import shared_utilities
+from shared_astro_utilities import matching_utils, panoptes_utils
 
 
 def upload_decals_to_panoptes(joint_catalog_all,
@@ -47,7 +47,7 @@ def upload_decals_to_panoptes(joint_catalog_all,
     joint_catalog = joint_catalog[joint_catalog['png_ready'] == True]
     joint_catalog = joint_catalog[joint_catalog['fits_filled'] == True]
 
-    dr2_galaxies, dr5_only_galaxies = shared_utilities.match_galaxies_to_catalog_table(  # unmatched galaxies are new
+    dr2_galaxies, dr5_only_galaxies = matching_utils.match_galaxies_to_catalog_table(  # unmatched galaxies are new
         galaxies=joint_catalog,
         catalog=previous_subjects,
         galaxy_suffix='',
@@ -193,10 +193,11 @@ def subjects_not_yet_classified(catalog, subject_extract, classification_extract
 
     if not subjects_already_added.empty:
         # get ra and dec from subject metadata
-        subjects_already_added = shared_utilities.load_current_subjects(subjects_already_added, workflow='6122',
-                                                                        save_loc='temp.csv')
-
-        _, subjects_not_yet_added = shared_utilities.match_galaxies_to_catalog_table(
+        subjects_already_added = panoptes_utils.load_current_subjects(
+            subjects_already_added,
+            workflow='6122',
+            save_loc='temp.csv')
+        _, subjects_not_yet_added = matching_utils.match_galaxies_to_catalog_table(
             galaxies=catalog,
             catalog=Table.from_pandas(subjects_already_added),  # duplicates don't matter here
             galaxy_suffix='',
