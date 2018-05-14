@@ -1,5 +1,6 @@
 import datetime
 import json
+import logging
 
 import pandas as pd
 import numpy as np
@@ -209,6 +210,10 @@ def load_current_subjects(df, workflow=None, subject_set=None, save_loc=None):
     #     df = df[df['workflow_id'] == workflow]
     # if subject_set is not None:
     #     df = df[df['subject_set_id'] == subject_set]
+    if df.empty:
+        logging.critical('Attempting to load subjects from empty dataframe')
+        raise ValueError
+
     df_with_metadata = split_json_str_to_columns(df, 'metadata')
     df_with_metadata['locations'] = df_with_metadata['locations'].apply(lambda x: json.loads(x)['0'])
 

@@ -60,7 +60,7 @@ def upload_decals_to_panoptes(joint_catalog_all,
     calibration_catalog = get_expert_catalog_joined_with_decals(dr2_galaxies, expert_catalog)
     # print(len(calibration_catalog))
 
-    # calibration_set_name = 'decals_dr2_nair_calibration_dr2_style_250_each'
+    # calibration_set_name = 'decals_dr2_nair_calibration_dr2_style_all'
 
     # calibration_catalog_dr2_style = make_catalog_png_images(
     #     calibration_catalog[:20],
@@ -72,7 +72,7 @@ def upload_decals_to_panoptes(joint_catalog_all,
     upload standard calibration set of Nair/DR2 galaxies, coloured by DR1/2 rules
     """
     # _ = upload_subject_set.upload_nair_calibration_subject_set(
-    #     calibration_catalog_dr2_style, calibration_set_name)
+    #     calibration_catalog, calibration_set_name)
 
     """
     upload all Nair/DR2 galaxies, coloured by Lupton rules
@@ -156,11 +156,11 @@ def upload_decals_to_panoptes(joint_catalog_all,
 
     logging.info('Galaxies in catalog not yet classified (to upload): {}'.format(len(subjects_not_yet_added)))
     subjects_not_yet_added_name = '5k_subjects_not_yet_classified'
-    _ = upload_subject_set.upload_galaxy_subject_set(subjects_not_yet_added_name[:5000], subjects_not_yet_added_name)
+    _ = upload_subject_set.upload_galaxy_subject_set(subjects_not_yet_added[:5000], subjects_not_yet_added_name)
     logging.info('Subject set {} successfully uploaded'.format(subjects_not_yet_added_name))
 
 
-def subjects_not_yet_classified(catalog, subject_extract, classification_extract, workflow_id=None, start_date=None):
+def subjects_not_yet_classified(catalog, subject_extract, classification_extract, workflow_id, start_date):
     """
     Filter for galaxies in catalog that are not classified
     Will return uploaded galaxies with 0 classifications. Do not run with fresh subject batch.
@@ -168,15 +168,15 @@ def subjects_not_yet_classified(catalog, subject_extract, classification_extract
         catalog (astropy.Table): all galaxies, with metadata for upload
         subject_extract (pd.DataFrame): Panoptes subject extract
         classification_extract (pd.DataFrame): Panoptes classification extract
-        workflow_id (str): (optional) if not None, filter classifications and subjects to be from workflow id
-        start_date (datetime.pyi): (optional) if not None, filter classifications to be made after start_date
+        workflow_id (str): filter classifications and subjects to be from workflow id
+        start_date (datetime.pyi): filter classifications to be made after start_date
 
     Returns:
         (astropy.Table) galaxies in catalog which have 0 classifications or are not yet uploaded anywhere
     """
 
     relevant_classifications = classification_extract[
-        (classification_extract['created_at'] >= start_date) &
+        (pd.to_datetime(classification_extract['created_at']) >= start_date) &
         (classification_extract['workflow_id'].astype(str) == workflow_id)]
 
     uploaded_subjects = set(relevant_classifications['subject_ids'])
@@ -190,16 +190,20 @@ def subjects_not_yet_classified(catalog, subject_extract, classification_extract
     logging.info('Unique subjects identified as classified since launch: {}'.format(
         len(subjects_already_added['subject_id'].unique())))
 
-    # get ra and dec from subject metadata
-    subjects_already_added = shared_utilities.load_current_subjects(subjects_already_added, workflow='6122',
-                                                                    save_loc='temp.csv')
+    if not subjects_already_added.empty:
+        # get ra and dec from subject metadata
+        subjects_already_added = shared_utilities.load_current_subjects(subjects_already_added, workflow='6122',
+                                                                        save_loc='temp.csv')
 
-    _, subjects_not_yet_added = shared_utilities.match_galaxies_to_catalog_table(
-        galaxies=catalog,
-        catalog=Table.from_pandas(subjects_already_added),  # duplicates don't matter here
-        galaxy_suffix='',
-        catalog_suffix='_from_extract',
-        matching_radius=10. * u.arcsec)
+        _, subjects_not_yet_added = shared_utilities.match_galaxies_to_catalog_table(
+            galaxies=catalog,
+            catalog=Table.from_pandas(subjects_already_added),  # duplicates don't matter here
+            galaxy_suffix='',
+            catalog_suffix='_from_extract',
+            matching_radius=10. * u.arcsec)
+    else:
+        logging.warning('Found no previously uploaded subjects with relevant classifications - not filtering!')
+        subjects_not_yet_added = joint_catalog.copy()
 
     return subjects_not_yet_added
 

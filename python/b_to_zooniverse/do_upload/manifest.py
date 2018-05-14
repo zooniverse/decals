@@ -2,7 +2,7 @@ import ast
 import os
 import functools
 from multiprocessing.dummy import Pool as ThreadPool
-import warnings
+import logging
 
 import numpy as np
 import astropy.table
@@ -62,6 +62,7 @@ def create_manifest_from_joint_catalog(catalog):
     Returns:
         (dict) of form {png_loc: img.png, key_data: {metadata_col: metadata_value}}
     """
+    logging.debug(catalog)
     key_data = get_key_astrophysical_columns(catalog)
 
     # there's a weird bug in astropy where certain strings are converted to bytes when added to pandas
@@ -95,12 +96,16 @@ def create_manifest_from_joint_catalog(catalog):
     key_data['nasa_ned_search'] = key_data.apply(
         lambda galaxy: coords_to_ned(galaxy['ra'], galaxy['dec'], search_radius=10.),
         axis=1)
+    key_data['vizier_search'] = key_data.apply(
+        lambda galaxy: coords_to_vizier(galaxy['ra'], galaxy['dec'], search_radius=10.),
+        axis=1)
 
     markdown_text = {
         'decals_search': 'Click to view in DECALS',
         'sdss_search': 'Click to view in SDSS',
         'simbad_search': 'Click to search SIMBAD',
-        'nasa_ned_search': 'Click to search NASA NED'
+        'nasa_ned_search': 'Click to search NASA NED',
+        'vizier_search': 'Click to search VizieR'
     }
     for link_column, link_text in markdown_text.items():
         key_data[link_column] = key_data[link_column].apply(
@@ -125,7 +130,7 @@ def create_manifest_from_joint_catalog(catalog):
     return manifest
 
 
-def upload_manifest_to_galaxy_zoo(subject_set_name, manifest, galaxy_zoo_id='5733', n_processes=30):
+def upload_manifest_to_galaxy_zoo(subject_set_name, manifest, galaxy_zoo_id='6490', n_processes=30):
     """
     Save manifest (set of galaxies with metadata prepared) to Galaxy Zoo
 
@@ -139,7 +144,7 @@ def upload_manifest_to_galaxy_zoo(subject_set_name, manifest, galaxy_zoo_id='573
         None
     """
     if 'TEST' in subject_set_name:
-        warnings.warn('Testing mode detected - not uploading!')
+        logging.warning('Testing mode detected - not uploading!')
         return manifest
 
     # Important - don't commit the password!
@@ -307,6 +312,23 @@ def coords_to_ned(ra, dec, search_radius):
     dec_string = '{:3.8f}d'.format(dec)
     search_radius_arcmin = search_radius / 60.
     return 'https://ned.ipac.caltech.edu/cgi-bin/objsearch?search_type=Near+Position+Search&in_csys=Equatorial&in_equinox=J2000.0&lon={}&lat={}&radius={}&hconst=73&omegam=0.27&omegav=0.73&corr_z=1&z_constraint=Unconstrained&z_value1=&z_value2=&z_unit=z&ot_include=ANY&nmp_op=ANY&out_csys=Equatorial&out_equinox=J2000.0&obj_sort=Distance+to+search+center&of=pre_text&zv_breaker=30000.0&list_limit=5&img_stamp=YES'.format(ra_string, dec_string, search_radius_arcmin)
+
+
+def coords_to_vizier(ra, dec, search_radius):
+    """
+    Get vizier search url for objects within search_radius of ra, dec coordinates.
+    Include radius from search target, sort by radius from search target.
+    http://vizier.u-strasbg.fr/doc/asu-summary.htx
+    Args:
+        ra (float): right ascension in degrees
+        dec (float): declination in degrees
+        search_radius (float): search radius around ra, dec in arcseconds
+
+    Returns:
+        (str): sdss navigate url for objects at ra, dec
+    """
+    return 'http://vizier.u-strasbg.fr/viz-bin/VizieR?&-c={},{}&-c.rs={}&-out.add=_r&-sort=_r'.format(
+        ra, dec, search_radius)
 
 
 def wrap_url_in_new_tab_markdown(url, display_text):

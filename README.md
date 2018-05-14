@@ -1,7 +1,6 @@
 [![Build Status](https://travis-ci.org/zooniverse/decals.svg?branch=master)](https://travis-ci.org/zooniverse/decals)
 [![Maintainability](https://api.codeclimate.com/v1/badges/b9ab23a834c329d744b3/maintainability)](https://codeclimate.com/github/zooniverse/decals/maintainability)
 [![Test Coverage](https://api.codeclimate.com/v1/badges/b9ab23a834c329d744b3/test_coverage)](https://codeclimate.com/github/zooniverse/decals/test_coverage)
-[![codecov](https://codecov.io/gh/zooniverse/decals/branch/master/graph/badge.svg)](https://codecov.io/gh/zooniverse/decals)
 [![astropy](http://img.shields.io/badge/powered%20by-AstroPy-orange.svg?style=flat)](http://www.astropy.org/)
 
 

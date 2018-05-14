@@ -149,6 +149,13 @@ def test_coords_to_ned(joint_catalog):
     # TODO I don't know how to programmatically test that this query works, beyond not falling over
 
 
+def test_coords_to_vizier(joint_catalog):
+    galaxy = joint_catalog[0]
+    url = manifest.coords_to_vizier(galaxy['ra'], galaxy['dec'], search_radius=10.)
+    print(url)
+    # TODO I don't know how to programmatically test that this query works, beyond not falling over
+
+
 def test_replace_bytes_with_str():
 
     byt = b'J094552.53-000534.1'

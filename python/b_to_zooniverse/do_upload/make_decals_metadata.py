@@ -9,7 +9,7 @@ Equivalent to make_decals_metadata but for dr2. Minor changes to account for dif
 """""
 
 import os
-import warnings
+import logging
 
 import numpy as np
 from astropy import units as u
@@ -43,9 +43,8 @@ def get_key_astrophysical_columns(catalog):
     for col in columns_to_copy:
         try:
             key_data[col] = catalog[col]
-        except:
-            pass
-            print(warnings.warn('Key metadata column "{}" missing; manifest incomplete'.format(col), UserWarning))
+        except KeyError:
+            logging.critical('Key metadata column "{}" missing; manifest incomplete'.format(col), UserWarning)
 
     size = calculate_sizes_in_kpc(catalog)
     key_data['absolute_size'] = size.value

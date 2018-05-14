@@ -1,8 +1,17 @@
 import pytest
 
+import logging
+import datetime
+import json
+
+import pandas as pd
 from astropy.table import Table
 
-from b_to_zooniverse.upload_decals import upload_decals_to_panoptes
+from b_to_zooniverse import upload_decals
+
+# logging.basicConfig(
+#     format='%(asctime)s %(message)s',
+#     level=logging.DEBUG)
 
 
 @pytest.fixture
@@ -180,3 +189,106 @@ def expert_catalog():
     # assert calibration_subjects[0]['png_loc'][-29:] == 'calibration_dir/gal_a_dr2.png'
     # assert calibration_subjects[0]['key_data']['selected_image'] == 'dr2_png_loc'
     # assert calibration_subjects[1]['png_loc'][-32:] == 'calibration_dir/gal_a_colour.png'
+
+
+@pytest.fixture()
+def subject_extract():
+    return pd.DataFrame([
+        {
+            'subject_id': 'classified',  # gal_dr2 should be removed from joint catalog - has been uploaded/classified
+            'workflow_id': '6122',
+            'metadata': json.dumps({  # read by subject loader
+                'ra': 1.,  # in joint catalog as 'gal_a'
+                'dec': -1,
+                'locations': json.dumps({'0': 'url.png'})  # expected by subject loader. Value is itself a json.
+            })
+        },
+        {
+            'subject_id': 'used_twice',
+            'workflow_id': '6122',
+            'metadata': json.dumps({
+                'ra': 146.,  # should still exclude gal_a
+                'dec': -1,
+                'locations': json.dumps({'0': 'url.png'})
+            })
+        },
+        {
+            'subject_id': 'used_twice',
+            'workflow_id': '9999',  # duplicate subject due to being attached to another workflow
+            'metadata': json.dumps({
+                'ra': 146.,  # should still exclude gal_a
+                'dec': -1,
+                'locations': json.dumps({'0': 'url.png'})
+            })
+
+        },
+        {
+            'subject_id': 'different_workflow',
+            'workflow_id': '9999',
+            'metadata': json.dumps({
+                'ra': 14.,  # should NOT exclude gal_dr1, classified elsewhere
+                'dec': -1,
+                'locations': json.dumps({'0': 'url.png'})
+            })
+        },
+        {
+            'subject_id': 'early',
+            'workflow_id': '6122',
+            'metadata': json.dumps({
+                'ra': 146.,  # should NOT exclude gal_dr1, classified early
+                'dec': -1,
+                'locations': json.dumps({'0': 'url.png'})
+            })
+        },
+
+    ])
+
+
+@pytest.fixture()
+def classification_extract():  # note: subject_ids, with an s, from Panoptes
+    return pd.DataFrame([
+        {
+            'subject_ids': 'classified',
+            'created_at': '2018-01-01',  # should ensure gal_dr2  is removed for being classified
+            'workflow_id': '6122'
+        },
+        {
+            'subject_ids': 'used_twice',
+            'created_at': pd.to_datetime('2018-01-01'),  # is already datetime, should not throw error
+            'workflow_id': '6122'
+        },
+        {
+            'subject_ids': 'used_twice',  # should still exclude gal_dr2 even though used twice
+            'created_at': pd.to_datetime('2018-01-01'),
+            'workflow_id': '6122',
+        },
+        {
+            'subject_ids': 'different_workflow',
+            'created_at': '2018-01-01',
+            'workflow_id': '9999',  # different workflow, don't exclude gal_dr1
+        },
+        {
+            'subject_ids': 'early',
+            'created_at': '2017-12-12',  # before start date, don't exclude gal_dr1
+            'workflow_id': '6122',
+        },
+        {
+            'subject_ids': 'not_in_subjects',  # not in subjects uploaded at all, cant be matched to joint catalog
+            'created_at': '2018-01-01',  # no effect
+            'workflow_id': '6122',
+        },
+
+    ])
+
+
+def test_subjects_not_yet_classified(joint_catalog, subject_extract, classification_extract):
+    subjects_not_classified = upload_decals.subjects_not_yet_classified(
+        joint_catalog,
+        subject_extract,
+        classification_extract,
+        start_date=datetime.datetime(year=2018, month=1, day=1),
+        workflow_id='6122'
+    )
+    # sky separation becomes really high - to the nearest uploaded galaxy!
+    assert len(subjects_not_classified) == 1
+    assert subjects_not_classified[0]['iauname'] == 'gal_dr1'
