@@ -55,6 +55,7 @@ def upload_decals_to_panoptes(joint_catalog_all,
 
     logging.info('Previously classified galaxies: {}'.format(len(dr2_galaxies)))
     logging.info('New galaxies: {}'.format(len(dr5_only_galaxies)))
+    # TODO something after here is resetting the log value
 
     # use Nair galaxies previously classified in DR2
     calibration_catalog = get_expert_catalog_joined_with_decals(dr2_galaxies, expert_catalog)
@@ -137,13 +138,13 @@ def upload_decals_to_panoptes(joint_catalog_all,
     Alternative: use endpoint API
     """
     latest_export_date_str = '2018-05-14'
-    latest_workflow_classification_export_loc = '/data/galaxy_zoo/decals/classifications/decals-dr5-classifications_{}.csv'.format(latest_export_date_str)
+    latest_workflow_classification_export_loc = '/data/repos/galaxy-zoo-panoptes/reduction/data/raw/classifications/{}_panoptes-classifications.csv'.format(latest_export_date_str)
     previous_classifications = pd.read_csv(
         latest_workflow_classification_export_loc,
         dtype={'workflow_id': str},
         parse_dates=['created_at'])
 
-    latest_subject_extract_loc = '/data/galaxy_zoo/decals/subjects/panoptes-subjects_{}.csv'.format(latest_export_date_str)
+    latest_subject_extract_loc = '/data/repos/galaxy-zoo-panoptes/reduction/data/raw/subjects/{}_panoptes-subjects.csv'.format(latest_export_date_str)
     uploaded_subjects = pd.read_csv(
         latest_subject_extract_loc,
         dtype={'workflow_id': str})
@@ -157,11 +158,14 @@ def upload_decals_to_panoptes(joint_catalog_all,
 
     logging.info('Galaxies in catalog not yet classified (to upload): {}'.format(len(subjects_not_yet_added)))
     subjects_not_yet_added_name = '10k_subjects_not_yet_classified'
-    _ = upload_subject_set.upload_galaxy_subject_set(subjects_not_yet_added_name[:10000], subjects_not_yet_added_name)
+    _ = upload_subject_set.upload_galaxy_subject_set(subjects_not_yet_added[:10000], subjects_not_yet_added_name)
     logging.info('Subject set {} successfully uploaded'.format(subjects_not_yet_added_name))
 
 
 def subjects_not_yet_classified(catalog, subject_extract, classification_extract, workflow_id, start_date):
+    # TODO temporary until I track down the logging level switch
+    logging.basicConfig(
+        level=logging.INFO)
     """
     Filter for galaxies in catalog that are not classified
     Will return uploaded galaxies with 0 classifications. Do not run with fresh subject batch.
@@ -182,6 +186,7 @@ def subjects_not_yet_classified(catalog, subject_extract, classification_extract
 
     uploaded_subjects = set(relevant_classifications['subject_ids'])
     logging.info('Subjects uploaded since launch: {}'.format(len(uploaded_subjects)))
+    # subjects must have at least 1 classification since upload. Don't rapidly re-run this.
 
     # 'subjects_already_added' includes any subject id duplicates: each workflow will have a row for that subject_id
     subjects_already_added = subject_extract[

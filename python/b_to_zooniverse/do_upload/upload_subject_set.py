@@ -5,6 +5,7 @@ from shared_utilities import current_date
 
 
 def upload_galaxy_subject_set(catalog, subject_set_name):
+    assert type(catalog) != str   # don't be stupid and mix up catalog with catalog name
     name = '{}_{}'.format(current_date(), subject_set_name)
     galaxy_manifest = manifest.create_manifest_from_joint_catalog(catalog)
     return manifest.upload_manifest_to_galaxy_zoo(name, galaxy_manifest)

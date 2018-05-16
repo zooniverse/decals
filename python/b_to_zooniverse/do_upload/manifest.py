@@ -130,14 +130,14 @@ def create_manifest_from_joint_catalog(catalog):
     return manifest
 
 
-def upload_manifest_to_galaxy_zoo(subject_set_name, manifest, galaxy_zoo_id='6490', n_processes=30):
+def upload_manifest_to_galaxy_zoo(subject_set_name, manifest, galaxy_zoo_id='5733', n_processes=30):
     """
     Save manifest (set of galaxies with metadata prepared) to Galaxy Zoo
 
     Args:
         subject_set_name (str): name for subject set
         manifest (list): containing dicts of form {png_loc: img.png, key_data: {metadata_col: metadata_value}}
-        galaxy_zoo_id (str): panoptes project id e.g. '5733' for Galaxy Zoo
+        galaxy_zoo_id (str): panoptes project id e.g. '5733' for Galaxy Zoo, '6490' for mobile
         n_processes (int): number of processes with which to upload galaxies in parallel
 
     Returns:
@@ -146,6 +146,13 @@ def upload_manifest_to_galaxy_zoo(subject_set_name, manifest, galaxy_zoo_id='649
     if 'TEST' in subject_set_name:
         logging.warning('Testing mode detected - not uploading!')
         return manifest
+
+    if galaxy_zoo_id == '5733':
+        logging.info('Uploading to Galaxy Zoo project 5733')
+    elif galaxy_zoo_id == '6490':
+        logging.info('Uploading to mobile app project 6490')
+    else:
+        logging.info('Uploading to unknown project {}'.format(galaxy_zoo_id))
 
     # Important - don't commit the password!
     zooniverse_login = read_data_from_txt(zooniverse_login_loc)
