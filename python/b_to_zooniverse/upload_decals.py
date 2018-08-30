@@ -15,7 +15,7 @@ from b_to_zooniverse.previous_subjects.previous_decals_subjects import get_previ
 from b_to_zooniverse.make_calibration_images.get_calibration_catalog import get_expert_catalog, get_expert_catalog_joined_with_decals
 from b_to_zooniverse.make_calibration_images.get_calibration_images import make_catalog_png_images
 from b_to_zooniverse.setup.check_joint_catalog import enforce_joint_catalog_columns
-from shared_astro_utilities import matching_utils, panoptes_utils
+from shared_astro_utils import matching_utils, panoptes_utils
 
 
 def upload_decals_to_panoptes(joint_catalog_all,

@@ -3,7 +3,7 @@ import os
 from astropy.table import Table
 
 from a_download_decals.get_catalogs.get_joint_nsa_decals_catalog import get_nsa_catalog
-from shared_astro_utilities import matching_utils, astropy_utils
+from shared_astro_utils import matching_utils, astropy_utils
 import b_to_zooniverse.to_zooniverse_settings as settings
 
 

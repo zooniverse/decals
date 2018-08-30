@@ -6,7 +6,7 @@ import pandas as pd
 
 import matplotlib.pyplot as plt
 
-from shared_astro_utilities import matching_utils
+from shared_astro_utils import matching_utils
 
 
 def get_expert_catalog_joined_with_decals(decals_catalog, expert_catalog, plot=False):

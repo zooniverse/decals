@@ -76,16 +76,16 @@ def test_enforce_joint_catalog_columns_with_cache(joint_catalog, nsa_cached, mon
             return nsa
     monkeypatch.setattr(check_joint_catalog, 'get_nsa_catalog', mock_get_nsa_catalog)
 
-    # when calling Table.read / Table.write in cache_table (under shared_astro_utilities/astropy_utils),
+    # when calling Table.read / Table.write in cache_table (under shared_astro_utils/astropy_utils),
     # don't actually read or write!
     def mock_read_table(target_loc):  # don't actually load the cached nsa catalog
         assert target_loc == settings.nsa_cached_loc
         return nsa_cached
-    monkeypatch.setattr('shared_astro_utilities.astropy_utils.Table.read', mock_read_table)
+    monkeypatch.setattr('shared_astro_utils.astropy_utils.Table.read', mock_read_table)
 
     def mock_write_table(self, target_loc, overwrite):  # don't actually save any files
         assert target_loc == settings.nsa_cached_loc
-    monkeypatch.setattr('shared_astro_utilities.astropy_utils.Table.write', mock_write_table)
+    monkeypatch.setattr('shared_astro_utils.astropy_utils.Table.write', mock_write_table)
 
     new_joint_catalog = enforce_joint_catalog_columns(joint_catalog)
     assert len(new_joint_catalog) == len(joint_catalog)

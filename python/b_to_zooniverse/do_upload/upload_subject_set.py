@@ -1,7 +1,7 @@
 import astropy.table
 
 from b_to_zooniverse.do_upload import manifest
-from shared_astro_utilities import time_utils
+from shared_astro_utils import time_utils
 
 
 def upload_galaxy_subject_set(catalog, subject_set_name):
