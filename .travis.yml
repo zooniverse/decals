@@ -6,7 +6,7 @@ language: python
 python:
   - "3.6"
 install:
-  - git clone git@github.com:RustyPanda/shared-astro-utilities.git ../shared-astro-utilities
+  - git clone https://github.com/RustyPanda/shared-astro-utilities.git ../shared-astro-utilities
   - pip install -r requirements.txt
 before_script:
   - curl -L https://codeclimate.com/downloads/test-reporter/test-reporter-latest-linux-amd64 > ./cc-test-reporter
