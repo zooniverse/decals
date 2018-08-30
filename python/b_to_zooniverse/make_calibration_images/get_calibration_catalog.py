@@ -3,7 +3,6 @@ from astropy.table import Table
 from astropy.io import fits
 from astropy import units as u
 import pandas as pd
-import json
 
 import matplotlib.pyplot as plt
 
