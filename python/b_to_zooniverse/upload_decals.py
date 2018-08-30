@@ -138,6 +138,7 @@ def upload_decals_to_panoptes(joint_catalog_all,
     Alternative: use endpoint API
     """
     latest_export_date_str = '2018-05-14'
+    logging.info('Uploading first n DR5 galaxies NOT already uploaded as of {}'.format(latest_export_date_str))
     latest_workflow_classification_export_loc = '/data/repos/galaxy-zoo-panoptes/reduction/data/raw/classifications/{}_panoptes-classifications.csv'.format(latest_export_date_str)
     previous_classifications = pd.read_csv(
         latest_workflow_classification_export_loc,
