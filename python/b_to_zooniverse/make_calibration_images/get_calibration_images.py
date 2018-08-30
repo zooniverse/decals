@@ -66,6 +66,7 @@ def save_image_of_galaxy(galaxy, size, img_creator_func, overwrite=False, pbar=N
 
     if overwrite or not os.path.exists(galaxy['png_loc']):
         try:
+            assert os.path.exists(galaxy['fits_loc'])
             img_data = fits.getdata(galaxy['fits_loc'])
         except:
             print('Fatal error: no or invalid fits at ' + galaxy['fits_loc'], flush=True)

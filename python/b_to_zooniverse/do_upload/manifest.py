@@ -130,7 +130,7 @@ def create_manifest_from_joint_catalog(catalog):
     return manifest
 
 
-def upload_manifest_to_galaxy_zoo(subject_set_name, manifest, galaxy_zoo_id='5733', n_processes=30):
+def upload_manifest_to_galaxy_zoo(subject_set_name, manifest, galaxy_zoo_id='5733', n_processes=10):
     """
     Save manifest (set of galaxies with metadata prepared) to Galaxy Zoo
 

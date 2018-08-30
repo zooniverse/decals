@@ -14,6 +14,8 @@ import datashader as ds
 import datashader.transfer_functions as tf
 from datashader.utils import export_image
 
+import matplotlib
+matplotlib.use('Agg')
 import matplotlib.pyplot as plt
 
 pd.options.display.max_rows = 200

@@ -1,5 +1,6 @@
 # Adapted from https://stanford.edu/~mwaskom/software/seaborn/examples/network_correlations.html
-
+import matplotlib
+matplotlib.use('Agg')
 import matplotlib.pyplot as plt
 import pandas as pd
 import seaborn as sns

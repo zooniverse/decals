@@ -1,6 +1,8 @@
 from astropy.table import Table
 from astropy.io import fits
 import pandas as pd
+import matplotlib
+matplotlib.use('Agg')
 import matplotlib.pyplot as plt
 import numpy as np
 

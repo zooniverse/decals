@@ -1,5 +1,7 @@
 
 import pandas as pd
+import matplotlib
+matplotlib.use('Agg')
 import matplotlib.pyplot as plt
 
 from a_download_decals.get_catalogs.get_joint_nsa_decals_catalog import get_nsa_catalog

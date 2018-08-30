@@ -137,7 +137,7 @@ def upload_decals_to_panoptes(joint_catalog_all,
     Must redo exports before uploading new galaxies. 
     Alternative: use endpoint API
     """
-    latest_export_date_str = '2018-05-14'
+    latest_export_date_str = '2018-08-30'
     logging.info('Uploading first n DR5 galaxies NOT already uploaded as of {}'.format(latest_export_date_str))
     latest_workflow_classification_export_loc = '/data/repos/galaxy-zoo-panoptes/reduction/data/raw/classifications/{}_panoptes-classifications.csv'.format(latest_export_date_str)
     previous_classifications = pd.read_csv(
@@ -154,12 +154,13 @@ def upload_decals_to_panoptes(joint_catalog_all,
         catalog=dr5_only_galaxies,
         subject_extract=uploaded_subjects,
         classification_extract=previous_classifications,
-        workflow_id='6122',
+        workflow_id='6122',  # dr5 workflow id
         start_date=datetime.datetime(year=2018, month=3, day=15))  # public launch date of DR5
 
     logging.info('Galaxies in catalog not yet classified (to upload): {}'.format(len(subjects_not_yet_added)))
-    subjects_not_yet_added_name = '10k_subjects_not_yet_classified'
-    _ = upload_subject_set.upload_galaxy_subject_set(subjects_not_yet_added[:10000], subjects_not_yet_added_name)
+    subjects_not_yet_added_name = '3k_subjects_not_yet_classified'
+    max_new_subjects = 3000
+    _ = upload_subject_set.upload_galaxy_subject_set(subjects_not_yet_added[:max_new_subjects], subjects_not_yet_added_name)
     logging.info('Subject set {} successfully uploaded'.format(subjects_not_yet_added_name))
 
 

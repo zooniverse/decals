@@ -3,7 +3,8 @@ from astropy.table import Table
 from astropy.io import fits
 from astropy import units as u
 import pandas as pd
-
+import matplotlib
+matplotlib.use('Agg')
 import matplotlib.pyplot as plt
 
 from shared_astro_utils import matching_utils

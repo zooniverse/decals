@@ -19,19 +19,25 @@ If you would like to re-check which subjects were already classified in DR2:
 Otherwise (most common):
 - Set `settings.new_previous_subjects` to False
 
+Note that placing the new exports in the default folders `galaxy-zoo-panoptes/reduction/data/raw/...` is also convenient for the reduction scripts. See the associated readme for the `galaxy-zoo-panoptes` repo for more info.
 
 ## Upload Steps
+- Run `pytest` from the repo root. Verify that all tests pass.
 - Request a workflow classification export
 - Request a subject export
-- Have many beers while Panoptes gets the classifications
+- Go to the pub while Panoptes gets the classifications (several hours)
 - Download both
 - Update `latest_export_date_str` value with current date
 - Rename with date and place workflow classification export in path matching `latest_workflow_classification_export_loc`
 - Rename with date and place subject export in path matching `latest_subject_extract_loc`
-- Update `subjects_not_yet_added_name` with a descriptive name for the subject set
-- Update the slice on `subjects_not_yet_added` to the number of new galaxies to upload
+- Update `subjects_not_yet_added_name` with a descriptive name for the subject set. The current date will be appended automatically.
+- Update `max_new_subjects` to the number of new galaxies to upload. This changes the slice on `subjects_not_yet_added`.
 - Ensure the `Upload first n DR5-only galaxies NOT already uploaded` block in - `upload_decals.upload_decals_to_panoptes` is the only uncommented block
-- Run `upload_decals.py`
+- Run `upload_decals.py`. If re-running on the same day with the same `subjects_not_yet_added_name`, you will need to delete the (potentially empty) previously created set from the [lab](https://www.zooniverse.org/lab/5733/subject-sets) first.
+
+## Important Follow-up (Don't Skip This!)
+- Update the `decals` repo wiki with a brief description of the subject set, following the previous pattern. 
+- I
 
 
 *Note: don't try to automate/optimize.*

@@ -7,6 +7,8 @@ from astropy.io import fits
 import astropy.table
 from astropy.table import Table
 from tqdm import tqdm
+import matplotlib
+matplotlib.use('Agg')
 import matplotlib.pyplot as plt
 
 
@@ -211,7 +213,7 @@ def filter_nsa_catalog_to_approximate_sky_area(nsa, bricks, visualise=False):
         lr.hist(nsa['ra'])
         lr.set_title('nsa ra')
         plt.tight_layout()
-        plt.show()
+        plt.savefig('nsa_catalog_sky_coverage.png')
 
     brick_maxdec = max(bricks['dec2'])
     brick_mindec = min(bricks['dec1'])
