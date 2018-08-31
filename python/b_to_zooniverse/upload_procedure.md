@@ -41,8 +41,10 @@ Note that placing the new exports in the default folders `galaxy-zoo-panoptes/re
 - Run `upload_decals.py`. If re-running on the same day with the same `subjects_not_yet_added_name`, you will need to delete the (potentially empty) previously created set from the [lab](https://www.zooniverse.org/lab/5733/subject-sets) first.
 
 ## Important Follow-up (Don't Skip This!)
-- Update the `decals` repo wiki with a brief description of the subject set, following the previous pattern. 
-- I
+- Verify that the subject images look okay and have the correct total number [in the lab](https://www.zooniverse.org/lab/5733/subject-sets).
+- Update the `galaxy-zoo-panoptes` [repo wiki](https://github.com/zooniverse/galaxy-zoo-panoptes/wiki/DECALS-DR5-Subject-Set-History) with a brief description of the subject set, following the previous pattern. 
+- Activate the new subject set for the [DR5 workflow](https://www.zooniverse.org/lab/5733/workflows/6122). **DO NOT** deactivate the previous subject set - the Panoptes classifications count will be reset to 0.
+- If a large batch has been completed or uploaded, thank the volunteers on [Talk](). Most contributions come from a small number of dedicated volunteers!
 
 
 *Note: don't try to automate/optimize.*
