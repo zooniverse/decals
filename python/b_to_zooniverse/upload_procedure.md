@@ -9,6 +9,11 @@ For identification of previous subjects to work correctly, all active subjects s
 It's better to upload a batch when the previous batch is nearly finished, to ensure this condition is met.
 
 
+## Assumptions
+You should have installed the `decals` package, located in `root/python`, with the following command:
+
+`pip install -e {repo root loc}/python`
+
 ## Setup
 Ensure the `settings.joint_catalog_loc`, `settings.expert_catalog_loc` and `settings.expert_catalog_interpreted_loc` file paths are up to date
 
