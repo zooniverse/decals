@@ -39,6 +39,8 @@ Note that placing the new exports in the default folders `galaxy-zoo-panoptes/re
 - Update `max_new_subjects` to the number of new galaxies to upload. This changes the slice on `subjects_not_yet_added`.
 - Ensure the `Upload first n DR5-only galaxies NOT already uploaded` block in - `upload_decals.upload_decals_to_panoptes` is the only uncommented block
 - Run `upload_decals.py`. If re-running on the same day with the same `subjects_not_yet_added_name`, you will need to delete the (potentially empty) previously created set from the [lab](https://www.zooniverse.org/lab/5733/subject-sets) first.
+If you prefer to upload a custom subject set, comment out the 'next n' block and use the 'custom' block instead.
+Note that this disables re-upload checks - be careful what you add!
 
 ## Important Follow-up (Don't Skip This!)
 - Verify that the subject images look okay and have the correct total number [in the lab](https://www.zooniverse.org/lab/5733/subject-sets).

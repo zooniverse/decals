@@ -32,7 +32,7 @@ def download_images_multithreaded(catalog, data_release, fits_dir, png_dir, over
     # Table does not support .apply - use list comprehension instead
     catalog['fits_loc'] = [get_loc(fits_dir, catalog[index], 'fits') for index in range(len(catalog))]
     catalog['png_loc'] = [get_loc(png_dir, catalog[index], 'png') for index in range(len(catalog))]
-    assert len(catalog['fits_loc']) == len(set(catalog['fits_loc']))
+    assert len(catalog['fits_loc']) == len(set(catalog['fits_loc']))  # no duplicates allowed
 
     download_params = {
         'data_release': data_release,

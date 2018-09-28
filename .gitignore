@@ -89,6 +89,14 @@ fits/*.csv
 
 python/test_examples/resizing/*
 python/test_examples/sample
-python/z_analysis WIP/yjan_gordon/*.png
-python/z_analysis/yjan_gordon/*.jpg
-python/z_analysis/yjan_gordon/*.fits
+python/test_examples/temp*
+python/test_examples/*/temp*
+python/z_analysis/yjan_gordon/downloaded*/J*/*.png
+python/z_analysis/yjan_gordon/downloaded*/J*/*.jpg
+python/z_analysis/yjan_gordon/downloaded*/J*/*.fits
+
+nsa_1_0_*_basic_cache.fits
+temp*.csv
+dr5_classifications.csv
+dr5_subjects.csv
+settings.json
