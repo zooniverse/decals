@@ -122,48 +122,48 @@ def upload_decals_to_panoptes(joint_catalog_all,
     Must redo exports before uploading new galaxies. 
     Alternative: use endpoint API
     """
-    # latest_export_date_str = '2018-08-30'
-    # logging.info('Uploading first n DR5 galaxies NOT already uploaded as of {}'.format(latest_export_date_str))
-    # latest_workflow_classification_export_loc = '/data/repos/galaxy-zoo-panoptes/reduction/data/raw/classifications/{}_panoptes-classifications.csv'.format(latest_export_date_str)
-    # previous_classifications = pd.read_csv(
-    #     latest_workflow_classification_export_loc,
-    #     dtype={'workflow_id': str},
-    #     parse_dates=['created_at'])
+    latest_export_date_str = '2018-09-28'
+    logging.info('Uploading first n DR5 galaxies NOT already uploaded as of {}'.format(latest_export_date_str))
+    latest_workflow_classification_export_loc = '/data/repos/galaxy-zoo-panoptes/reduction/data/raw/classifications/{}_panoptes-classifications.csv'.format(latest_export_date_str)
+    previous_classifications = pd.read_csv(
+        latest_workflow_classification_export_loc,
+        dtype={'workflow_id': str},
+        parse_dates=['created_at'])
 
-    # latest_subject_extract_loc = '/data/repos/galaxy-zoo-panoptes/reduction/data/raw/subjects/{}_panoptes-subjects.csv'.format(latest_export_date_str)
-    # uploaded_subjects = pd.read_csv(
-    #     latest_subject_extract_loc,
-    #     dtype={'workflow_id': str})
+    latest_subject_extract_loc = '/data/repos/galaxy-zoo-panoptes/reduction/data/raw/subjects/{}_panoptes-subjects.csv'.format(latest_export_date_str)
+    uploaded_subjects = pd.read_csv(
+        latest_subject_extract_loc,
+        dtype={'workflow_id': str})
 
-    # subjects_not_yet_added = subjects_not_yet_classified(
-    #     catalog=dr5_only_galaxies,
-    #     subject_extract=uploaded_subjects,
-    #     classification_extract=previous_classifications,
-    #     workflow_id='6122',  # dr5 workflow id
-    #     start_date=datetime.datetime(year=2018, month=3, day=15))  # public launch date of DR5
+    subjects_not_yet_added = subjects_not_yet_classified(
+        catalog=dr5_only_galaxies,
+        subject_extract=uploaded_subjects,
+        classification_extract=previous_classifications,
+        workflow_id='6122',  # dr5 workflow id
+        start_date=datetime.datetime(year=2018, month=3, day=15))  # public launch date of DR5
 
-    # logging.info('Galaxies in catalog not yet classified (to upload): {}'.format(len(subjects_not_yet_added)))
-    # subjects_not_yet_added_name = '3k_subjects_not_yet_classified'
-    # max_new_subjects = 3000
-    # _ = upload_subject_set.upload_galaxy_subject_set(subjects_not_yet_added[:max_new_subjects], subjects_not_yet_added_name)
-    # logging.info('Subject set {} successfully uploaded'.format(subjects_not_yet_added_name))
+    logging.info('Galaxies in catalog not yet classified (to upload): {}'.format(len(subjects_not_yet_added)))
+    subjects_not_yet_added_name = '5k_subjects_not_yet_classified'
+    max_new_subjects = 5000
+    _ = upload_subject_set.upload_galaxy_subject_set(subjects_not_yet_added[:max_new_subjects], subjects_not_yet_added_name)
+    logging.info('Subject set {} successfully uploaded'.format(subjects_not_yet_added_name))
 
 
     """
     Upload all galaxies from custom catalog
     """
-    gordon_galaxies = Table.from_pandas(pd.read_csv('/Data/repos/decals/python/z_analysis/gordon_galaxies_sample_2_unique.csv'))
-    custom_catalog_maybe_duplicate, lost = matching_utils.match_galaxies_to_catalog_table(
-        galaxies=gordon_galaxies,
-        catalog=joint_catalog_all,
-        galaxy_suffix='',
-        catalog_suffix='_dr5',
-        matching_radius=10. * u.arcsec
-    )
-    logging.warning('Missing: {} from custom catalog!'.format(len(lost)))
-    custom_catalog = table.unique(custom_catalog_maybe_duplicate, keys='iauname', keep='first')
-    custom_catalog_name = 'yjan_gordon_sdss_sample_sept_1100ish'
-    _ = upload_subject_set.upload_galaxy_subject_set(custom_catalog, custom_catalog_name)
+    # gordon_galaxies = Table.from_pandas(pd.read_csv('/Data/repos/decals/python/z_analysis/gordon_galaxies_sample_2_unique.csv'))
+    # custom_catalog_maybe_duplicate, lost = matching_utils.match_galaxies_to_catalog_table(
+    #     galaxies=gordon_galaxies,
+    #     catalog=joint_catalog_all,
+    #     galaxy_suffix='',
+    #     catalog_suffix='_dr5',
+    #     matching_radius=10. * u.arcsec
+    # )
+    # logging.warning('Missing: {} from custom catalog!'.format(len(lost)))
+    # custom_catalog = table.unique(custom_catalog_maybe_duplicate, keys='iauname', keep='first')
+    # custom_catalog_name = 'yjan_gordon_sdss_sample_sept_1100ish'
+    # _ = upload_subject_set.upload_galaxy_subject_set(custom_catalog, custom_catalog_name)
 
 
 def subjects_not_yet_classified(catalog, subject_extract, classification_extract, workflow_id, start_date):
