@@ -18,13 +18,14 @@ You should have installed the `decals` package, located in `root/python`, with t
 Ensure the `settings.joint_catalog_loc`, `settings.expert_catalog_loc` and `settings.expert_catalog_interpreted_loc` file paths are up to date
 
 If you would like to re-check which subjects were already classified in DR2:
-- Set `settings.new_previous_subjects` to True
+- Set `new_previous_subjects` (in `upload_decals.py`) to True
 - Ensure the `settings.previous_subjects_loc` path points to the DR2 subject export
 - Ensure `settings.nsa_v1_0_0_catalog_loc` points to a download of the NSA catalog v1_0_0
+
 Otherwise (most common):
 - Set `settings.new_previous_subjects` to False
 
-Note that placing the new exports in the default folders `galaxy-zoo-panoptes/reduction/data/raw/...` is also convenient for the reduction scripts. See the associated readme for the `galaxy-zoo-panoptes` repo for more info.
+Note that placing the new exports in the default folders `galaxy-zoo-panoptes/reduction/data/raw/...` is also convenient for the reduction scripts. See the associated readme for the `gz-panoptes-reduction` repo for more info.
 
 ## Upload Steps
 - Run `pytest` from the repo root. Verify that all tests pass.

@@ -122,18 +122,20 @@ def upload_decals_to_panoptes(joint_catalog_all,
     Must redo exports before uploading new galaxies. 
     Alternative: use endpoint API
     """
-    latest_export_date_str = '2018-09-28'
+    latest_export_date_str = '2018-11-05'
     logging.info('Uploading first n DR5 galaxies NOT already uploaded as of {}'.format(latest_export_date_str))
-    latest_workflow_classification_export_loc = '/data/repos/galaxy-zoo-panoptes/reduction/data/raw/classifications/{}_panoptes-classifications.csv'.format(latest_export_date_str)
+    latest_workflow_classification_export_loc = '/data/galaxy_zoo/decals/panoptes/reduction/raw/classifications/extracts/{}_panoptes-classifications.csv'.format(latest_export_date_str)
     previous_classifications = pd.read_csv(
         latest_workflow_classification_export_loc,
         dtype={'workflow_id': str},
-        parse_dates=['created_at'])
+        parse_dates=['created_at'],
+        usecols=['created_at', 'workflow_id', 'subject_ids'])
 
-    latest_subject_extract_loc = '/data/repos/galaxy-zoo-panoptes/reduction/data/raw/subjects/{}_panoptes-subjects.csv'.format(latest_export_date_str)
+    latest_subject_extract_loc = '/data/galaxy_zoo/decals/panoptes/reduction/raw/subjects/{}_panoptes-subjects.csv'.format(latest_export_date_str)
     uploaded_subjects = pd.read_csv(
         latest_subject_extract_loc,
-        dtype={'workflow_id': str})
+        dtype={'workflow_id': str},
+        usecols=['workflow_id', 'subject_id', 'metadata', 'locations'])
 
     subjects_not_yet_added = subjects_not_yet_classified(
         catalog=dr5_only_galaxies,
@@ -227,7 +229,7 @@ if __name__ == '__main__':
         format='%(asctime)s %(message)s',
         level=logging.INFO)
 
-    settings.new_previous_subjects = False
+    new_previous_subjects = False
 
     joint_catalog_loc = settings.joint_catalog_loc
     joint_catalog = Table(fits.getdata(joint_catalog_loc))
@@ -235,7 +237,7 @@ if __name__ == '__main__':
 
     expert_catalog = get_expert_catalog(settings.expert_catalog_loc, settings.expert_catalog_interpreted_loc)
 
-    if settings.new_previous_subjects:
+    if new_previous_subjects:
         raw_previous_subjects = pd.read_csv(settings.previous_subjects_loc)  # MongoDB subject dump to csv from Ouro.
         nsa_v1_0_0 = get_nsa_catalog(settings.nsa_v1_0_0_catalog_loc, '1_0_0')  # takes a while
         previous_subjects = get_previous_decals_subjects(raw_previous_subjects, nsa_v1_0_0)
