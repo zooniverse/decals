@@ -1,4 +1,6 @@
 import numpy as np
+# expects [channel, x, y] shape images, in fits style
+# unlike ML style of [n, x, y, channel]
 
 
 def dr2_style_rgb(imgs, bands, mnmx=None, arcsinh=None, scales=None, desaturate=False):

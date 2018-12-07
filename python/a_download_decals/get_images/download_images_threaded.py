@@ -277,19 +277,21 @@ def make_png_from_fits(fits_loc, png_loc, png_size):
     Returns:
         None
     '''
-
-    # Set parameters for RGB image creation
-    _scales = dict(
-        g=(2, 0.008),
-        r=(1, 0.014),
-        z=(0, 0.019))
-    _mnmx = (-0.5, 300)
-
     try:
         img, hdr = fits.getdata(fits_loc, 0, header=True)
     except Exception:
         warnings.warn('Invalid fits at {}'.format(fits_loc))
     else:  # if no exception getting image
+
+        # TODO wrap?
+
+            # Set parameters for RGB image creation
+        _scales = dict(
+            g=(2, 0.008),
+            r=(1, 0.014),
+            z=(0, 0.019))
+        _mnmx = (-0.5, 300)
+
         rgbimg = dr2_style_rgb(
             (img[0, :, :], img[1, :, :], img[2, :, :]),
             'grz',
