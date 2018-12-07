@@ -46,8 +46,8 @@ Note that this disables re-upload checks - be careful what you add!
 ## Important Follow-up (Don't Skip This!)
 - Verify that the subject images look okay and have the correct total number [in the lab](https://www.zooniverse.org/lab/5733/subject-sets).
 - Update the `galaxy-zoo-panoptes` [repo wiki](https://github.com/zooniverse/galaxy-zoo-panoptes/wiki/DECALS-DR5-Subject-Set-History) with a brief description of the subject set, following the previous pattern. 
-- Activate the new subject set for the [DR5 workflow](https://www.zooniverse.org/lab/5733/workflows/6122). **DO NOT** deactivate the previous subject set - the Panoptes classifications count will be reset to 0.
-- If a large batch has been completed or uploaded, thank the volunteers on [Talk](). Most contributions come from a small number of dedicated volunteers!
+- Activate the new subject set for the [DR5 workflow](https://www.zooniverse.org/lab/5733/workflows/6122). **DO NOT** deactivate the previous subject set - the Panoptes classifications count on the statistics page will be reset to 0.
+- If a large batch has been completed or uploaded, thank the volunteers on [Talk](https://www.zooniverse.org/projects/zookeeper/galaxy-zoo/talk). Most contributions come from a small number of dedicated volunteers!
 
 
 *Note: don't try to automate/optimize.*
