@@ -90,6 +90,9 @@ def create_manifest_from_joint_catalog(catalog):
     key_data['sdss_search'] = key_data.apply(
         lambda galaxy: coords_to_sdss_navigate(galaxy['ra'], galaxy['dec']),
         axis=1)
+    key_data['panstarrs_dr1_search'] = key_data.apply(
+        lambda galaxy: coords_to_panstarrs(galaxy['ra'], galaxy['dec']),
+        axis=1)
     key_data['simbad_search'] = key_data.apply(
         lambda galaxy: coords_to_simbad(galaxy['ra'], galaxy['dec'], search_radius=10.),
         axis=1)
@@ -103,6 +106,7 @@ def create_manifest_from_joint_catalog(catalog):
     markdown_text = {
         'decals_search': 'Click to view in DECALS',
         'sdss_search': 'Click to view in SDSS',
+        'panstarrs_dr1_search': 'Click to view in PANSTARRS DR1',
         'simbad_search': 'Click to search SIMBAD',
         'nasa_ned_search': 'Click to search NASA NED',
         'vizier_search': 'Click to search VizieR'
@@ -332,10 +336,25 @@ def coords_to_vizier(ra, dec, search_radius):
         search_radius (float): search radius around ra, dec in arcseconds
 
     Returns:
-        (str): sdss navigate url for objects at ra, dec
+        (str): vizier url for objects at ra, dec
     """
     return 'http://vizier.u-strasbg.fr/viz-bin/VizieR?&-c={},{}&-c.rs={}&-out.add=_r&-sort=_r'.format(
         ra, dec, search_radius)
+
+
+def coords_to_panstarrs(ra, dec):
+    """
+    Get panstarrs dr1 cutout url at ra, dec coordinates.
+    http://ps1images.stsci.edu/cgi-bin/ps1cutouts
+    Args:
+        ra (float): right ascension in degrees
+        dec (float): declination in degrees
+
+    Returns:
+        (str): cutout url for objects at ra, dec
+    """
+    return 'http://ps1images.stsci.edu/cgi-bin/ps1cutouts?pos={}{:+f}&filter=color&filter=g&filter=r&filter=i&filter=z&filter=y&filetypes=stack&auxiliary=data&size=240&output_size=0&verbose=0&autoscale=99.500000&catlist='.format(
+        ra, dec)
 
 
 def wrap_url_in_new_tab_markdown(url, display_text):
