@@ -145,9 +145,10 @@ def upload_decals_to_panoptes(joint_catalog_all,
         start_date=datetime.datetime(year=2018, month=3, day=15))  # public launch date of DR5
 
     logging.info('Galaxies in catalog not yet classified (to upload): {}'.format(len(subjects_not_yet_added)))
-    subjects_not_yet_added_name = '5k_subjects_not_yet_classified'
+    subjects_not_yet_added_name = '10k_subjects_for_touch_table_v2'
     max_new_subjects = 5000
-    _ = upload_subject_set.upload_galaxy_subject_set(subjects_not_yet_added[:max_new_subjects], subjects_not_yet_added_name)
+    subjects_not_yet_added.sort(['ra', 'dec'])
+    _ = upload_subject_set.upload_galaxy_subject_set(subjects_not_yet_added[-max_new_subjects:], subjects_not_yet_added_name)
     logging.info('Subject set {} successfully uploaded'.format(subjects_not_yet_added_name))
 
 
