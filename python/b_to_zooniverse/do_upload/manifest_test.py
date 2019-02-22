@@ -160,7 +160,6 @@ def test_coords_to_panstarrs(joint_catalog):
     galaxy = joint_catalog[0]
     url = manifest.coords_to_panstarrs(galaxy['ra'], galaxy['dec'])
     print(url)
-    assert False
     # TODO I don't know how to programmatically test that this query works, beyond not falling over
 
 
