@@ -100,3 +100,5 @@ temp*.csv
 dr5_classifications.csv
 dr5_subjects.csv
 settings.json
+
+.vscode/*

@@ -44,22 +44,13 @@ def upload_decals_to_panoptes(joint_catalog_all,
     logging.info('Galaxies in joint catalog: {}'.format(len(joint_catalog_all)))
     logging.info('fits in joint catalog: {}'.format(joint_catalog_all['fits_ready'].sum()))
 
-    joint_catalog = joint_catalog_all.copy()
-    joint_catalog = joint_catalog[joint_catalog['png_ready'] == True]
-    joint_catalog = joint_catalog[joint_catalog['fits_filled'] == True]
-
-    dr2_galaxies, dr5_only_galaxies = matching_utils.match_galaxies_to_catalog_table(  # unmatched galaxies are new
-        galaxies=joint_catalog,
-        catalog=previous_subjects,
-        galaxy_suffix='',
-        catalog_suffix='_dr1_2')  # if field exists in both catalogs
-
-    logging.info('Previously classified galaxies: {}'.format(len(dr2_galaxies)))
-    logging.info('New galaxies: {}'.format(len(dr5_only_galaxies)))
-    # TODO something after here is resetting the log value
+    dr5_only_galaxies = get_galaxies_safe_for_upload(joint_catalog, previous_subjects)
+    # for use by active learning
+    dr5_only_galaxies.to_pandas().to_csv('decals_dr5_uploadable_master_catalog_nov_2019.csv')
+    exit()
 
     # use Nair galaxies previously classified in DR2
-    calibration_catalog = get_expert_catalog_joined_with_decals(dr2_galaxies, expert_catalog)
+    # calibration_catalog = get_expert_catalog_joined_with_decals(dr2_galaxies, expert_catalog)
     # print(len(calibration_catalog))
 
     # calibration_set_name = 'decals_dr2_nair_calibration_dr2_style_all'
@@ -168,6 +159,23 @@ def upload_decals_to_panoptes(joint_catalog_all,
     # _ = upload_subject_set.upload_galaxy_subject_set(custom_catalog, custom_catalog_name)
 
 
+def get_galaxies_safe_for_upload(joint_catalog, previous_subjects):
+    dr2_galaxies, dr5_only_galaxies = matching_utils.match_galaxies_to_catalog_table(  # unmatched galaxies are new
+        galaxies=joint_catalog,
+        catalog=previous_subjects,
+        galaxy_suffix='',
+        catalog_suffix='_dr1_2')  # if field exists in both catalogs
+
+    logging.info('Previously classified galaxies: {}'.format(len(dr2_galaxies)))
+    logging.info('New galaxies: {}'.format(len(dr5_only_galaxies)))
+
+    dr5_only_galaxies = dr5_only_galaxies[dr5_only_galaxies['png_ready'] == True]
+    dr5_only_galaxies = dr5_only_galaxies[dr5_only_galaxies['fits_filled'] == True]
+    logging.info(f'Galaxies safe for upload: {len(dr5_only_galaxies)}')
+
+    return dr5_only_galaxies
+
+
 def subjects_not_yet_classified(catalog, subject_extract, classification_extract, workflow_id, start_date):
     # TODO temporary until I track down the logging level switch
     logging.basicConfig(
@@ -219,6 +227,7 @@ def subjects_not_yet_classified(catalog, subject_extract, classification_extract
         subjects_not_yet_added = joint_catalog.copy()
 
     return subjects_not_yet_added
+
 
 
 if __name__ == '__main__':
