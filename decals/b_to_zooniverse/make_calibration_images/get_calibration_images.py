@@ -5,7 +5,7 @@ from multiprocessing.dummy import Pool as ThreadPool
 from astropy.io import fits
 from tqdm import tqdm
 
-from a_download_decals.get_images.download_images_threaded import get_loc, save_carefully_resized_png
+from decals.a_download_decals.get_images.download_images_threaded import get_loc, save_carefully_resized_png
 
 
 def make_catalog_png_images(catalog, img_creator_func, png_dir, size=424, n_processes=10, overwrite=False):

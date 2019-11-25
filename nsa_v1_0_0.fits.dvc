@@ -1,0 +1,7 @@
+md5: 7e0a312d6b2284c0dc877da61009b015
+outs:
+- md5: 660aba1647d41ddc5f1a41ff6c01c519
+  path: /media/mike/beta/decals/catalogs/nsa_v1_0_0.fits
+  cache: true
+  metric: false
+  persist: false

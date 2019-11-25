@@ -2,9 +2,10 @@ import os
 
 from astropy.table import Table
 
-from a_download_decals.get_catalogs.get_joint_nsa_decals_catalog import get_nsa_catalog
 from shared_astro_utils import matching_utils, astropy_utils
-import b_to_zooniverse.to_zooniverse_settings as settings
+
+from decals.a_download_decals.get_catalogs.get_joint_nsa_decals_catalog import get_nsa_catalog
+import decals.b_to_zooniverse.to_zooniverse_settings as settings
 
 
 def enforce_joint_catalog_columns(joint_catalog, overwrite_cache=False):

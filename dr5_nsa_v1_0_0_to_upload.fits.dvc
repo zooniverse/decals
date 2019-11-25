@@ -1,0 +1,7 @@
+md5: 0ac051c9a78e825514a48a11e3513008
+outs:
+- md5: 425b0b38b3feedfd1ec2b215e1d470e8
+  path: /media/mike/beta/decals/catalogs/dr5_nsa_v1_0_0_to_upload.fits
+  cache: true
+  metric: false
+  persist: false

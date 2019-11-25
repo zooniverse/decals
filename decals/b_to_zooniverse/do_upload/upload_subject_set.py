@@ -1,6 +1,6 @@
 import astropy.table
 
-from b_to_zooniverse.do_upload import manifest
+from decals.b_to_zooniverse.do_upload import manifest
 from shared_astro_utils import time_utils
 
 
@@ -37,6 +37,6 @@ def upload_nair_calibration_subject_set(calibration_catalog, subject_set_name, n
     print('Calibration rings: {}'.format(featured_galaxies['has_ring'].sum()))
     print('Calibration non-bar, non-ring: {}'.format(len(other_galaxies)))
 
-    name = '{}_{}'.format(current_date(), subject_set_name)
+    name = '{}_{}'.format(time_utils.current_date(), subject_set_name)
     calibration_galaxies_manifest = manifest.create_manifest_from_joint_catalog(calibration_galaxies)
     manifest.upload_manifest_to_galaxy_zoo(name, calibration_galaxies_manifest)

@@ -14,4 +14,4 @@ pytest-cov
 codecov
 requests
 numba
-../shared-astro-utilities  # local install
+../shared-astro-utilities  # local install, TODO move to github

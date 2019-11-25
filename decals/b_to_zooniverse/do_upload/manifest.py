@@ -10,8 +10,8 @@ import pandas as pd
 from panoptes_client import Panoptes, Project, SubjectSet, Subject
 from tqdm import tqdm
 
-from b_to_zooniverse.do_upload.make_decals_metadata import get_key_astrophysical_columns
-from b_to_zooniverse.to_zooniverse_settings import zooniverse_login_loc
+from decals.b_to_zooniverse.do_upload.make_decals_metadata import get_key_astrophysical_columns
+from decals.b_to_zooniverse.to_zooniverse_settings import zooniverse_login_loc
 from shared_astro_utils import time_utils
 
 

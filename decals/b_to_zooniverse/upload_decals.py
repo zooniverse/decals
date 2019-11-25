@@ -8,15 +8,17 @@ from astropy import table
 from astropy.table import Table
 from astropy import units as u
 
-from a_download_decals.get_catalogs.get_joint_nsa_decals_catalog import get_nsa_catalog
-from a_download_decals.get_images import image_utils
-import b_to_zooniverse.to_zooniverse_settings as settings
-from b_to_zooniverse.do_upload import upload_subject_set
-from b_to_zooniverse.previous_subjects.previous_decals_subjects import get_previous_decals_subjects
-from b_to_zooniverse.make_calibration_images.get_calibration_catalog import get_expert_catalog, get_expert_catalog_joined_with_decals
-from b_to_zooniverse.make_calibration_images.get_calibration_images import make_catalog_png_images
-from b_to_zooniverse.setup.check_joint_catalog import enforce_joint_catalog_columns
 from shared_astro_utils import matching_utils, panoptes_utils
+
+from decals.a_download_decals.get_catalogs.get_joint_nsa_decals_catalog import get_nsa_catalog
+from decals.a_download_decals.get_images import image_utils
+import decals.b_to_zooniverse.to_zooniverse_settings as settings
+from decals.b_to_zooniverse.do_upload import upload_subject_set
+from decals.b_to_zooniverse.previous_subjects.previous_decals_subjects import get_previous_decals_subjects
+from decals.b_to_zooniverse.make_calibration_images.get_calibration_catalog import get_expert_catalog, get_expert_catalog_joined_with_decals
+from decals.b_to_zooniverse.make_calibration_images.get_calibration_images import make_catalog_png_images
+from decals.b_to_zooniverse.setup.check_joint_catalog import enforce_joint_catalog_columns
+
 
 
 def upload_decals_to_panoptes(joint_catalog_all,
@@ -242,6 +244,7 @@ if __name__ == '__main__':
 
     joint_catalog_loc = settings.joint_catalog_loc
     joint_catalog = Table(fits.getdata(joint_catalog_loc))
+    # warning, requires 6GB+ of memory
     joint_catalog = enforce_joint_catalog_columns(joint_catalog, overwrite_cache=False)
 
     expert_catalog = get_expert_catalog(settings.expert_catalog_loc, settings.expert_catalog_interpreted_loc)

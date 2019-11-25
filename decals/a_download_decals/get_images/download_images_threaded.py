@@ -10,7 +10,7 @@ from astropy.io import fits
 from tqdm import tqdm
 from PIL import Image
 
-from a_download_decals.get_images.image_utils import dr2_style_rgb
+from decals.a_download_decals.get_images.image_utils import dr2_style_rgb
 
 
 def download_images_multithreaded(catalog, data_release, fits_dir, png_dir, overwrite_fits, overwrite_png, n_processes=10):
