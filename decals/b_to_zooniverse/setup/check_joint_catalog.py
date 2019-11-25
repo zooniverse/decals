@@ -55,7 +55,7 @@ def enforce_joint_catalog_columns(joint_catalog, overwrite_cache=False):
                 settings.nsa_catalog_loc,
                 settings.nsa_cached_loc,
                 required_data_cols,
-                get_nsa_catalog,
+                get_nsa_catalog,  # loading func
                 kwargs)
 
         cached_nsa = Table.read(settings.nsa_cached_loc)  # cached nsa table has already been through get_nsa_catalog
