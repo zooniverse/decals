@@ -23,8 +23,7 @@ def get_nsa_catalog(nsa_catalog_loc, nsa_version):
     Returns:
         (astropy.Table) NASA-Sloan Atlas. Each row is a galaxy in SDSS.
     '''
-
-    nsa = astropy.table.Table(fits.getdata(nsa_catalog_loc, 1))
+    nsa = Table.read(nsa_catalog_loc)
     # Coordinate catalog has uppercase column names. Rename to lowercase match exposure_catalog.
     for colname in nsa.colnames:
         nsa.rename_column(colname, colname.lower())
