@@ -1,0 +1,7 @@
+md5: b5aa14b5e985bb1659b5e27435bdbdb1
+outs:
+- md5: 9bc45a64796d55223b491736e6db8989
+  path: /media/mike/beta/decals/catalogs/nair_sdss_catalog.fit
+  cache: true
+  metric: false
+  persist: false

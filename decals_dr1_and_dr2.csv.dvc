@@ -1,0 +1,7 @@
+md5: c3fa83f48cf00f767674e66625eaa28d
+outs:
+- md5: 032e71b121f72c3071b1af21da4102c3
+  path: /media/mike/beta/decals/catalogs/decals_dr1_and_dr2.csv
+  cache: true
+  metric: false
+  persist: false

@@ -48,7 +48,10 @@ def upload_decals_to_panoptes(joint_catalog_all,
 
     dr5_only_galaxies = get_galaxies_safe_for_upload(joint_catalog, previous_subjects)
     # for use by active learning
-    dr5_only_galaxies.to_pandas().to_csv('decals_dr5_uploadable_master_catalog_nov_2019.csv')
+    del dr5_only_galaxies['absmag']
+    del dr5_only_galaxies['petroflux']
+    del dr5_only_galaxies['nmgy']
+    dr5_only_galaxies.to_pandas().to_csv('/media/mike/beta/decals/catalogs/decals_dr5_uploadable_master_catalog_nov_2019.csv')
     exit()
 
     # use Nair galaxies previously classified in DR2
